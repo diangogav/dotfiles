@@ -46,3 +46,12 @@ alias wget='wget -c'
 # Antigravity Specific
 alias ag-brain='cd ~/.gemini/antigravity/brain'
 alias ag-logs='tail -f ~/.gemini/antigravity/logs/agent.log'
+
+# Project Navigation
+alias c='cd ~/code'
+alias projects='cd ~/code'
+
+# Zoxide "Magic" (allows 'to code')
+if command -v zoxide >/dev/null 2>&1; then
+    alias to='z'
+fi

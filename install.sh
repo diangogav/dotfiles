@@ -35,6 +35,34 @@ install_dependencies() {
         log "Installing Zoxide..."
         curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
     fi
+
+    # The Fuck installation removed by user request (compatibility issues)
+    # if ! command -v thefuck >/dev/null || [[ $(command -v thefuck) == "/usr/bin/thefuck" ]]; then
+    #    ...
+    # fi
+
+    # Fix Locales (prevent perl warnings)
+    if command -v localedef >/dev/null; then
+        log "Generating locales..."
+        sudo locale-gen en_US.UTF-8 || true
+        sudo update-locale LANG=en_US.UTF-8 || true
+    fi
+
+    # FZF Deep Integration
+    # Remove system fzf (too old, conflicts with git version)
+    if command -v fzf >/dev/null && [[ $(command -v fzf) == "/usr/bin/fzf" ]]; then
+        log "Removing system fzf (too old)..."
+        if command -v apt-get >/dev/null; then
+            sudo apt-get remove -y fzf || true
+        fi
+    fi
+
+    # Install FZF (Deep integration via Git)
+    if [ ! -d "$HOME/.fzf" ]; then
+        log "Installing FZF (Git Method for deep integration)..."
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        ~/.fzf/install --all
+    fi
 }
 
 # 2. Run Stow
@@ -68,6 +96,17 @@ run_stow() {
         log "Linking $pkg..."
         stow -R $pkg
     done
+
+    # Restore VS Code extensions if listing exists
+    if [ -f "$HOME/dotfiles/vscode/extensions.txt" ] && command -v code >/dev/null; then
+        log "Installing VS Code extensions..."
+        # We run it in background or sequentially? Sequentially is safer but slower.
+        # Check if the list is non-empty
+        if [ -s "$HOME/dotfiles/vscode/extensions.txt" ]; then
+            cat "$HOME/dotfiles/vscode/extensions.txt" | xargs -L 1 code --install-extension >/dev/null 2>&1 || true
+            log "VS Code extensions installed."
+        fi
+    fi
 }
 
 # Main

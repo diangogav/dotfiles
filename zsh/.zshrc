@@ -46,6 +46,15 @@ if command -v starship >/dev/null 2>&1; then
     eval "$(starship init zsh)"
 fi
 
+# The Fuck (Disabled)
+# if command -v thefuck >/dev/null 2>&1; then
+#     eval $(thefuck --alias)
+#     eval $(thefuck --alias fuck)
+# fi
+
+# FZF (Deep Integration)
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # 7. Syntax Highlighting & Autosuggestions (if installed in standardized locations)
 if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
     source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

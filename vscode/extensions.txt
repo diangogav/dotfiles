@@ -1,0 +1,14 @@
+arcticicestudio.nord-visual-studio-code
+catppuccin.catppuccin-vsc
+cleanthemes.matte-black-theme
+eamodio.gitlens
+enkia.tokyo-night
+geequlim.godot-tools
+github.copilot-chat
+jdinhlife.gruvbox
+jovejonovski.ocean-green
+monokai.theme-monokai-pro-vscode
+mvllow.rose-pine
+openai.chatgpt
+qufiwefefwoyn.kanagawa
+sainnhe.everforest

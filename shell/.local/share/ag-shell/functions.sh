@@ -24,3 +24,22 @@ extract() {
         echo "'$1' is not a valid file"
     fi
 }
+
+# VS Code Extension Management
+vscode-save() {
+    echo "Saving VS Code extensions to ~/dotfiles/vscode/extensions.txt..."
+    code --list-extensions > $HOME/dotfiles/vscode/extensions.txt
+    echo "Done! $(wc -l < $HOME/dotfiles/vscode/extensions.txt) extensions saved."
+}
+
+vscode-install() {
+    if [ -f "$HOME/dotfiles/vscode/extensions.txt" ]; then
+        echo "Installing VS Code extensions from list..."
+        cat $HOME/dotfiles/vscode/extensions.txt | while read extension; do
+            code --install-extension "$extension"
+        done
+        echo "Done!"
+    else
+        echo "No extensions.txt found in ~/dotfiles/vscode/"
+    fi
+}

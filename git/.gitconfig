@@ -1,0 +1,21 @@
+[user]
+    name = Diango
+    email = diango@example.com
+
+[core]
+    editor = code --wait
+    autocrlf = input
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = false
+
+[alias]
+    s = status
+    c = commit
+    co = checkout
+    b = branch
+    df = diff
+    lg = log --graph --oneline --decorate --all

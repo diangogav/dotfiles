@@ -1,0 +1,85 @@
+# Cartoon & Freak Starship Preset
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+
+# Character - The prompt symbol
+[character]
+success_symbol = '[ 👽 ](bold #00ff00)'
+error_symbol = '[ 💀 ](bold #ff0000)'
+vicmd_symbol = '[ 🤖 ](bold #ffff00)'
+
+# Directory
+[directory]
+style = 'bold #ff69b4'  # Hot Pink
+format = '[📂 $path ]($style)'
+truncation_length = 3
+truncation_symbol = '…/'
+
+# Git
+[git_branch]
+symbol = '🐙 '
+style = 'bold #00ffff' # Cyan
+format = '[$symbol$branch]($style) '
+
+[git_status]
+style = 'bold #ffa500' # Orange
+conflicted = '⚔️ '
+ahead = '🚀 '
+behind = '🐢 '
+diverged = '🔀 '
+up_to_date = '✨ '
+untracked = '🤷 '
+stashed = '📦 '
+modified = '📝 '
+staged = '➕ '
+renamed = '🏷️ '
+deleted = '🗑️ '
+
+# Node.js
+[nodejs]
+symbol = '⬢ '
+style = 'bold #98fb98' # Pale Green
+format = '[$symbol($version )]($style)'
+
+# Python
+[python]
+symbol = '🐍 '
+style = 'bold #ffff00' # Yellow
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+
+# Rust
+[rust]
+symbol = '🦀 '
+style = 'bold #ff4500' # Orange Red
+format = '[$symbol($version )]($style)'
+
+# Golang
+[golang]
+symbol = '🐹 '
+style = 'bold #00bfff' # Deep Sky Blue
+format = '[$symbol($version )]($style)'
+
+# Docker
+[docker_context]
+symbol = '🐳 '
+style = 'bold #1e90ff' # Dodger Blue
+format = '[$symbol$context]($style) '
+
+# Hostname (only on SSH)
+[hostname]
+ssh_only = false
+format = '[👾 $hostname](bold #ba55d3) ' # Medium Orchid
+disabled = false
+
+[username]
+style_user = 'white bold'
+style_root = 'black bold'
+format = '[$user]($style) '
+disabled = false
+
+# Time
+[time]
+disabled = false
+style = 'bold #4b0082' # Indigo
+format = '[🕙 $time]($style) '

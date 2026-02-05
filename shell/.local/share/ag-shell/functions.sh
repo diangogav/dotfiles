@@ -43,3 +43,23 @@ vscode-install() {
         echo "No extensions.txt found in ~/dotfiles/vscode/"
     fi
 }
+
+# Add Alias Helper
+# Usage: add-alias name "command"
+add-alias() {
+    local name=$1
+    local command=$2
+    local alias_file="$HOME/dotfiles/shell/.local/share/ag-shell/aliases.sh"
+
+    if [ -z "$name" ] || [ -z "$command" ]; then
+        echo "Usage: add-alias <name> \"<command>\""
+        return 1
+    fi
+
+    echo "alias $name='$command'" >> "$alias_file"
+    echo "Alias added: $name -> $command"
+    
+    # Reload aliases
+    source "$alias_file"
+    echo "Aliases reloaded!"
+}

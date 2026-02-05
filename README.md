@@ -35,3 +35,4 @@ cd ~/dotfiles
 - `vscode-save`: Guardar extensiones instaladas.
 - `vscode-install`: Restaurar extensiones.
 - `to code` / `c`: Ir a la carpeta de proyectos.
+- `add-alias`: Crear nuevos alias rápidamente (ej: `add-alias gs "git status"`).

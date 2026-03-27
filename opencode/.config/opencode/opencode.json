@@ -196,6 +196,26 @@
     "opencode-antigravity-auth@latest"
   ],
   "provider": {
+    "ollama": {
+      "api": "http://127.0.0.1:11434/v1",
+      "models": {
+        "qwen2.5-coder:7b": {
+          "limit": {
+            "context": 32768,
+            "output": 8192
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "name": "Qwen 2.5 Coder 7B (Local)"
+        }
+      }
+    },
     "google": {
       "models": {
         "antigravity-claude-opus-4-5-thinking": {

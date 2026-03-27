@@ -8,8 +8,20 @@ export PATH="$HOME/bin:$PATH"
 
 # History control (avoid dupes)
 export HISTCONTROL=ignoreboth:erasedups
-export HISTSIZE=100000
-export HISTFILESIZE=100000
+export HISTSIZE=10000
+export HISTFILESIZE=10000
+
+# Bun (Universal JavaScript Runtime)
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+[ -n "$ZSH_VERSION" ] && [ -s "/home/diango/.bun/_bun" ] && source "/home/diango/.bun/_bun"
+
+# OpenCode AI Terminal
+export PATH="$HOME/.opencode/bin:$PATH"
+
+# Omakub (Basecamp's Ubuntu setup)
+export OMAKUB_PATH="$HOME/.local/share/omakub"
+export PATH="$OMAKUB_PATH/bin:$PATH"
 
 # Color support
 export TERM=xterm-256color

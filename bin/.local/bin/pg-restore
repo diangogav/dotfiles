@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# pg-restore: Restore a PostgreSQL database from a local backup file
+# Usage: pg-restore <BACKUP_FILE> <TARGET_CONNECTION_STRING>
+
+set -e
+
+RESET='\033[0m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+
+log_info() { echo -e "${GREEN}[INFO]${RESET} $1"; }
+log_warn() { echo -e "${YELLOW}[WARN]${RESET} $1"; }
+log_error() { echo -e "${RED}[ERROR]${RESET} $1"; }
+
+check_deps() {
+    if ! command -v psql >/dev/null; then
+        log_error "psql is not installed. Please install postgresql-client."
+        exit 1
+    fi
+}
+
+show_usage() {
+    echo "Usage: pg-restore <BACKUP_FILE> <TARGET_CONNECTION_STRING>"
+    echo ""
+    echo "Examples:"
+    echo "  pg-restore my_backup.sql.gz postgres://user:pass@localhost:5432/mydb"
+    echo "  pg-restore latest.sql postgres://user:pass@localhost:5432/mydb"
+}
+
+check_deps
+
+BACKUP_FILE="$1"
+TARGET_DB="$2"
+
+if [ -z "$BACKUP_FILE" ] || [ -z "$TARGET_DB" ]; then
+    show_usage
+    exit 1
+fi
+
+if [ ! -f "$BACKUP_FILE" ]; then
+    log_error "Backup file not found: $BACKUP_FILE"
+    exit 1
+fi
+
+log_warn "⚠️  WARNING: This will apply the SQL dump to the target database."
+log_warn "   Target: $TARGET_DB"
+log_warn "   Source: $BACKUP_FILE"
+echo -n "Are you sure? [y/N] "
+read -r response
+if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    log_info "Restore cancelled."
+    exit 0
+fi
+
+log_info "Starting restore..."
+
+if [[ "$BACKUP_FILE" == *.gz ]]; then
+    # Handle gzipped SQL
+    gunzip -c "$BACKUP_FILE" | psql "$TARGET_DB"
+elif [[ "$BACKUP_FILE" == *.sql ]]; then
+    # Handle plain SQL
+    psql "$TARGET_DB" < "$BACKUP_FILE"
+else
+    # Try generic restore if extension unknown (assume plain or let psql handle)
+    # But better to warn.
+    log_warn "Unknown extension. Attempting standard input redirection..."
+    psql "$TARGET_DB" < "$BACKUP_FILE"
+fi
+
+if [ $? -eq 0 ]; then
+    log_info "Restore completed successfully! ✅"
+else
+    log_error "Restore encountered errors."
+    exit 1
+fi

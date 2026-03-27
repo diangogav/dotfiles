@@ -1,5 +1,5 @@
 {
-    "editor.fontFamily": "'Fira Code', 'JetBrains Mono', 'Droid Sans Mono', 'monospace', 'Droid Sans Fallback'",
+    "editor.fontFamily": "Fira Code",
     "editor.fontLigatures": true,
     "editor.fontSize": 14,
     "editor.formatOnSave": true,
@@ -15,10 +15,16 @@
     "terminal.integrated.fontFamily": "'Fira Code', 'JetBrains Mono', 'monospace'",
     "terminal.integrated.fontSize": 14,
     "workbench.iconTheme": "material-icon-theme",
-    "workbench.colorTheme": "Dracula",
+    "workbench.colorTheme": "Night Owl",
     "workbench.startupEditor": "newUntitledFile",
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
     "git.autofetch": true,
-    "git.confirmSync": false
+    "git.confirmSync": false,
+    "gitlens.ai.model": "vscode",
+    "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+    "vscode_custom_css.imports": [
+        "file:///home/diango/dotfiles/vscode/vscode_style.css"
+    ],
+    "vscode_custom_css.policy": true
 }

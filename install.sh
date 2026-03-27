@@ -13,11 +13,11 @@ log() {
 # 1. Install Dependencies (Debian/Ubuntu/Fedora detection basic)
 install_dependencies() {
     log "Checking dependencies..."
-    
+
     if command -v apt-get >/dev/null; then
         # Try update, but don't fail properly (broken PPAs are common)
         sudo apt-get update || echo "Warning: apt-get update failed. Attempting to install packages anyway..."
-        sudo apt-get install -y stow zsh git curl
+        sudo apt-get install -y stow zsh git curl fastfetch
     elif command -v dnf >/dev/null; then
         sudo dnf install -y stow zsh git curl
     else
@@ -29,7 +29,7 @@ install_dependencies() {
         log "Installing Starship..."
         curl -sS https://starship.rs/install.sh | sh -s -- -y
     fi
-    
+
     # Install Zoxide if missing
     if ! command -v zoxide >/dev/null; then
         log "Installing Zoxide..."
@@ -48,6 +48,12 @@ install_dependencies() {
         sudo update-locale LANG=en_US.UTF-8 || true
     fi
 
+    # Install Mise (Universal Version Manager - Node, Python, etc.)
+    if ! command -v mise >/dev/null; then
+        log "Installing Mise..."
+        curl https://mise.run | sh
+    fi
+
     # FZF Deep Integration
     # Remove system fzf (too old, conflicts with git version)
     if command -v fzf >/dev/null && [[ $(command -v fzf) == "/usr/bin/fzf" ]]; then
@@ -63,12 +69,39 @@ install_dependencies() {
         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
         ~/.fzf/install --all
     fi
+
+    # Reference for plugins path (inside dotfiles to be stowed, or direct?)
+    # Since we want them managed by stow, we put them in the repo.
+    # But wait, install.sh runs *before* or *after*? logic is inside install_dependencies.
+    # We will clone them directly to the source path.
+    ZSH_PLUGINS="$HOME/dotfiles/zsh/.local/share/zsh/plugins"
+    mkdir -p "$ZSH_PLUGINS"
+
+    if [ ! -d "$ZSH_PLUGINS/zsh-syntax-highlighting" ]; then
+        log "Installing zsh-syntax-highlighting..."
+        git clone git@github.com:MichaelAquilina/zsh-you-should-use.git "$ZSH_PLUGINS/zsh-syntax-highlighting"
+    fi
+
+    if [ ! -d "$ZSH_PLUGINS/zsh-autosuggestions" ]; then
+        log "Installing zsh-autosuggestions..."
+        git clone git@github.com:MichaelAquilina/zsh-you-should-use.git "$ZSH_PLUGINS/zsh-autosuggestions"
+    fi
+
+    if [ ! -d "$ZSH_PLUGINS/zsh-completions" ]; then
+        log "Installing zsh-completions..."
+        git clone git@github.com:MichaelAquilina/zsh-you-should-use.git "$ZSH_PLUGINS/zsh-completions"
+    fi
+
+    if [ ! -d "$ZSH_PLUGINS/you-should-use" ]; then
+        log "Installing you-should-use..."
+        git clone git@github.com:MichaelAquilina/zsh-you-should-use.git "$ZSH_PLUGINS/you-should-use"
+    fi
 }
 
 # 2. Run Stow
 run_stow() {
     log "Stowing packages..."
-    
+
     # Ensure targets exist
     mkdir -p ~/.config
     mkdir -p ~/.local/bin
@@ -88,10 +121,10 @@ run_stow() {
     backup_if_exists "$HOME/.gitconfig"
     backup_if_exists "$HOME/.config/starship.toml"
     backup_if_exists "$HOME/.config/Code/User/settings.json"
-    
+
     # Packages to stow
-    PACKAGES=(shell zsh bash starship git bin vscode)
-    
+    PACKAGES=(shell zsh bash starship git bin vscode warp opencode antigravity)
+
     for pkg in "${PACKAGES[@]}"; do
         log "Linking $pkg..."
         stow -R $pkg

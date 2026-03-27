@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# pg-backup: Backup a remote PostgreSQL database to local storage
+# Usage: pg-backup <CONNECTION_STRING> [BACKUP_NAME_PREFIX]
+
+set -e
+
+RESET='\033[0m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+
+log_info() { echo -e "${GREEN}[INFO]${RESET} $1"; }
+log_warn() { echo -e "${YELLOW}[WARN]${RESET} $1"; }
+log_error() { echo -e "${RED}[ERROR]${RESET} $1"; }
+
+check_deps() {
+    if ! command -v pg_dump >/dev/null; then
+        log_error "pg_dump is not installed. Please install postgresql-client or libpq-dev."
+        log_info "On Ubuntu/Debian: sudo apt-get install postgresql-client"
+        exit 1
+    fi
+}
+
+show_usage() {
+    echo "Usage: pg-backup <CONNECTION_STRING> [BACKUP_NAME_PREFIX]"
+    echo ""
+    echo "Examples:"
+    echo "  pg-backup postgres://user:pass@host:5432/dbname"
+    echo "  pg-backup postgres://user:pass@host:5432/dbname my-project-backup"
+    echo ""
+    echo "The backup will be saved in the current directory with a timestamp."
+}
+
+check_deps
+
+CONN_STRING="$1"
+PREFIX="$2"
+
+if [ -z "$CONN_STRING" ]; then
+    show_usage
+    exit 1
+fi
+
+# Extract DB name from connection string for default prefix if not provided
+if [ -z "$PREFIX" ]; then
+    # Try to extract the last part after / and remove potential query params
+    DB_NAME=$(echo "$CONN_STRING" | sed -r 's/.*\/([^?]+).*/\1/')
+    PREFIX="${DB_NAME:-backup}"
+fi
+
+TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+FILENAME="${PREFIX}_${TIMESTAMP}.sql.gz"
+
+log_info "Starting backup for: $PREFIX"
+log_info "Destination: ./$FILENAME"
+
+# Run pg_dump and pipe to gzip
+# -Fp: Plain text (default), allowing partial restores if needed, but we gzip it.
+# -F c (Custom) is also good but plain+gzip is very universal. Let's use custom (-Fc) for robustness if preferred, 
+# but sql.gz is very human readable if unzipped. Let's stick to compressed plain SQL for max compatibility or Custom for speed.
+# Let's use -Fc (Custom) format as it's the most flexible for pg_restore. Actually, let's stick to standard SQL compressed for generic use.
+# Using standard SQL dump piped to gzip.
+
+if pg_dump "$CONN_STRING" | gzip > "$FILENAME"; then
+    SIZE=$(du -h "$FILENAME" | cut -f1)
+    log_info "Backup completed successfully! 🚀"
+    log_info "File: $FILENAME ($SIZE)"
+else
+    log_error "Backup failed!"
+    rm -f "$FILENAME" # Cleanup failed file
+    exit 1
+fi

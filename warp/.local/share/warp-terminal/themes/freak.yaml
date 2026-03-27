@@ -1,0 +1,30 @@
+# Freak Theme for Warp Terminal
+# Matching the neon/cyberpunk aesthetic of the current dotfiles setup.
+
+# UI Colors
+accent: '#ff00ff'       # Neon Pink
+background: '#0f0f14'   # Very dark, almost black
+foreground: '#e0e0e0'   # White/Grey
+details: 'darker'       # UI element contrast
+cursor: '#00ff00'       # Neon Green cursor
+
+# Terminal Colors (ANSI)
+terminal_colors:
+  normal:
+    black: '#1a1b26'
+    red: '#f7768e'      # Tokyo Night Red
+    green: '#9ece6a'    # Tokyo Night Green
+    yellow: '#e0af68'   # Tokyo Night Yellow
+    blue: '#7aa2f7'     # Tokyo Night Blue
+    magenta: '#bb9af7'  # Tokyo Night Purple
+    cyan: '#7dcfff'     # Tokyo Night Cyan
+    white: '#a9b1d6'
+  bright:
+    black: '#414868'
+    red: '#ff9e64'      # Orange-ish Red
+    green: '#00ff9f'    # Neon Green
+    yellow: '#ffff00'   # Neon Yellow
+    blue: '#00ffff'     # Neon Cyan
+    magenta: '#ff00ff'  # Neon Magenta
+    cyan: '#7dcfff'
+    white: '#c0caf5'

@@ -19,6 +19,10 @@ if [ -f "$HOME/.local/share/ag-shell/functions.sh" ]; then
 fi
 
 # 3. Tools Initialization
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate bash)"
+fi
+
 if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init bash)"
 fi
@@ -37,4 +41,9 @@ if command -v starship >/dev/null 2>&1; then
 else
     # Fallback prompt
     PS1='\u@\h:\w\$ '
+fi
+
+# 4. Greeting
+if command -v fastfetch >/dev/null 2>&1; then
+    fastfetch
 fi

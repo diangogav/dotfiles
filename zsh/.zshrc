@@ -38,6 +38,10 @@ source $HOME/.local/share/ag-shell/aliases.sh
 source $HOME/.local/share/ag-shell/functions.sh
 
 # 6. Tools Initialization
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh)"
+fi
+
 if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init zsh)"
 fi
@@ -55,15 +59,41 @@ fi
 # FZF (Deep Integration)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# 7. Syntax Highlighting & Autosuggestions (if installed in standardized locations)
-if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+# 7. Syntax Highlighting & Autosuggestions
+# Check user local plugins (stowed via dotfiles)
+LOCAL_PLUGINS="$HOME/.local/share/zsh/plugins"
+
+if [ -f "$LOCAL_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+    source "$LOCAL_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+elif [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
     source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 elif [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
     source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
-if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+if [ -f "$LOCAL_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+    source "$LOCAL_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh"
+elif [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
     source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 elif [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
     source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
+
+# Additional Plugins
+if [ -d "$LOCAL_PLUGINS/zsh-completions" ]; then
+    fpath=("$LOCAL_PLUGINS/zsh-completions/src" $fpath)
+fi
+
+if [ -f "$LOCAL_PLUGINS/you-should-use/you-should-use.plugin.zsh" ]; then
+    source "$LOCAL_PLUGINS/you-should-use/you-should-use.plugin.zsh"
+fi
+
+# Initialize completion system (must be done after adding to fpath)
+autoload -Uz compinit
+compinit
+
+# 8. Greeting
+if command -v fastfetch >/dev/null 2>&1; then
+    fastfetch
+fi
+

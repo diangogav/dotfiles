@@ -17,9 +17,9 @@ install_dependencies() {
     if command -v apt-get >/dev/null; then
         # Try update, but don't fail properly (broken PPAs are common)
         sudo apt-get update || echo "Warning: apt-get update failed. Attempting to install packages anyway..."
-        sudo apt-get install -y stow zsh git curl fastfetch direnv zellij eza
+        sudo apt-get install -y stow zsh git curl fastfetch direnv zellij eza neovim ripgrep fd-find
     elif command -v dnf >/dev/null; then
-        sudo dnf install -y stow zsh git curl direnv zellij eza
+        sudo dnf install -y stow zsh git curl direnv zellij eza neovim ripgrep fd-find
     else
         log "Warning: Could not detect package manager. Please install 'stow' and 'zsh' manually."
     fi
@@ -98,7 +98,7 @@ run_stow() {
     backup_if_exists "$HOME/.config/Code/User/settings.json"
 
     # Packages to stow
-    PACKAGES=(shell zsh bash starship git bin vscode warp opencode antigravity ghostty zellij)
+    PACKAGES=(shell zsh bash starship git bin vscode warp opencode antigravity ghostty zellij nvim)
 
     for pkg in "${PACKAGES[@]}"; do
         log "Linking $pkg..."

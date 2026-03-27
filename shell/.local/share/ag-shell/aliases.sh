@@ -1,10 +1,10 @@
 # Modern replacements
-if command -v exa >/dev/null 2>&1; then
-    alias ls='exa'
-    alias ll='exa -lbGF --git'
-    alias la='exa -lbGFa --git'
-    alias l='exa -lbGF --git'
-    alias tree='exa --tree'
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza'
+    alias ll='eza -lbGF --git'
+    alias la='eza -lbGFa --git'
+    alias l='eza -lbGF --git'
+    alias tree='eza --tree'
 else
     alias ll='ls -alF'
     alias la='ls -A'

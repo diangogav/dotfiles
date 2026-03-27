@@ -59,34 +59,32 @@ fi
 # FZF (Deep Integration)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# 7. Syntax Highlighting & Autosuggestions
-# Check user local plugins (stowed via dotfiles)
-LOCAL_PLUGINS="$HOME/.local/share/zsh/plugins"
-
-if [ -f "$LOCAL_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-    source "$LOCAL_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-elif [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-elif [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# 7. Zinit Plugin Manager & Plugins
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+if [ ! -d "$ZINIT_HOME" ]; then
+   mkdir -p "$(dirname $ZINIT_HOME)"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
+source "${ZINIT_HOME}/zinit.zsh"
 
-if [ -f "$LOCAL_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
-    source "$LOCAL_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh"
-elif [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-    source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-elif [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
+# Extend Zinit functionality
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
 
-# Additional Plugins
-if [ -d "$LOCAL_PLUGINS/zsh-completions" ]; then
-    fpath=("$LOCAL_PLUGINS/zsh-completions/src" $fpath)
-fi
+# Essential Plugins
+zinit light zsh-users/zsh-completions
+zinit light MichaelAquilina/zsh-you-should-use
+zinit light zsh-users/zsh-history-substring-search
 
-if [ -f "$LOCAL_PLUGINS/you-should-use/you-should-use.plugin.zsh" ]; then
-    source "$LOCAL_PLUGINS/you-should-use/you-should-use.plugin.zsh"
-fi
+# Fzf-Tab (deeply integrates fzf with zsh's tab completion)
+zinit light Aloxaf/fzf-tab
+
+# Autosuggestions and Syntax Highlighting (MUST be the last plugins to load)
+zinit light zsh-users/zsh-autosuggestions
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 # Initialize completion system (must be done after adding to fpath)
 autoload -Uz compinit

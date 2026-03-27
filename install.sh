@@ -70,32 +70,7 @@ install_dependencies() {
         ~/.fzf/install --all
     fi
 
-    # Reference for plugins path (inside dotfiles to be stowed, or direct?)
-    # Since we want them managed by stow, we put them in the repo.
-    # But wait, install.sh runs *before* or *after*? logic is inside install_dependencies.
-    # We will clone them directly to the source path.
-    ZSH_PLUGINS="$HOME/dotfiles/zsh/.local/share/zsh/plugins"
-    mkdir -p "$ZSH_PLUGINS"
-
-    if [ ! -d "$ZSH_PLUGINS/zsh-syntax-highlighting" ]; then
-        log "Installing zsh-syntax-highlighting..."
-        git clone git@github.com:MichaelAquilina/zsh-you-should-use.git "$ZSH_PLUGINS/zsh-syntax-highlighting"
-    fi
-
-    if [ ! -d "$ZSH_PLUGINS/zsh-autosuggestions" ]; then
-        log "Installing zsh-autosuggestions..."
-        git clone git@github.com:MichaelAquilina/zsh-you-should-use.git "$ZSH_PLUGINS/zsh-autosuggestions"
-    fi
-
-    if [ ! -d "$ZSH_PLUGINS/zsh-completions" ]; then
-        log "Installing zsh-completions..."
-        git clone git@github.com:MichaelAquilina/zsh-you-should-use.git "$ZSH_PLUGINS/zsh-completions"
-    fi
-
-    if [ ! -d "$ZSH_PLUGINS/you-should-use" ]; then
-        log "Installing you-should-use..."
-        git clone git@github.com:MichaelAquilina/zsh-you-should-use.git "$ZSH_PLUGINS/you-should-use"
-    fi
+    # Zsh plugins are now managed directly in .zshrc via Zinit.
 }
 
 # 2. Run Stow

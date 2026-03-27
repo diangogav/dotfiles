@@ -98,7 +98,7 @@ run_stow() {
     backup_if_exists "$HOME/.config/Code/User/settings.json"
 
     # Packages to stow
-    PACKAGES=(shell zsh bash starship git bin vscode warp opencode antigravity)
+    PACKAGES=(shell zsh bash starship git bin vscode warp opencode antigravity ghostty)
 
     for pkg in "${PACKAGES[@]}"; do
         log "Linking $pkg..."

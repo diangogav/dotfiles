@@ -1,0 +1,19 @@
+# Configuración de Ghostty
+# Generada por la IA
+
+# Tema para que matchee tu estética de VS Code
+theme = Night Owl
+
+# Fuente principal (Harfbuzz/Ligatures soportadas por defecto)
+font-family = "Fira Code"
+font-size = 14
+
+# Estética de ventana
+window-padding-x = 10
+window-padding-y = 10
+background-opacity = 0.95
+window-decoration = false
+
+# Otros extras piolas de Ghostty
+cursor-style = bar
+shell-integration = zsh

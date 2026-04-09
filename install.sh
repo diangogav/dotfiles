@@ -17,9 +17,9 @@ install_dependencies() {
     if command -v apt-get >/dev/null; then
         # Try update, but don't fail properly (broken PPAs are common)
         sudo apt-get update || echo "Warning: apt-get update failed. Attempting to install packages anyway..."
-        sudo apt-get install -y stow zsh git curl fastfetch direnv zellij eza neovim ripgrep fd-find
+        sudo apt-get install -y stow zsh git curl fastfetch direnv neovim ripgrep fd-find
     elif command -v dnf >/dev/null; then
-        sudo dnf install -y stow zsh git curl direnv zellij eza neovim ripgrep fd-find
+        sudo dnf install -y stow zsh git curl direnv neovim ripgrep fd-find
     else
         log "Warning: Could not detect package manager. Please install 'stow' and 'zsh' manually."
     fi

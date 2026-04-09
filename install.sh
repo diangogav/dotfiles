@@ -117,8 +117,19 @@ run_stow() {
     fi
 }
 
+# 3. Setup GNOME Preferences
+setup_gnome_preferences() {
+    if [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]]; then
+        log "Setting GNOME wallpaper and screensaver..."
+        gsettings set org.gnome.desktop.background picture-uri "file://$HOME/dotfiles/wallpapers/the-super-mario.jpg"
+        gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/dotfiles/wallpapers/the-super-mario.jpg"
+        gsettings set org.gnome.desktop.screensaver picture-uri "file://$HOME/dotfiles/wallpapers/the-super-mario.jpg"
+    fi
+}
+
 # Main
 install_dependencies
 run_stow
+setup_gnome_preferences
 
 log "Done! Please restart your shell or run 'zsh'."
